@@ -2,7 +2,7 @@
 
 ### Path Finding Visualiser with support for the following Path Finding Algorithms
 #### * [x] Dijkstra's Algorithm
-#### * [] A* Algortihm
+#### * [ ] A* Algortihm
 
 </br>
 
