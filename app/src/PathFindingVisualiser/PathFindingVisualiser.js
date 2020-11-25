@@ -8,29 +8,44 @@ var tempCurrentCheck = [[-1, -1]];
 var points = {};
 
 function PathFindingVisualiser() {
+    const [nodeType, SetNodeType] = useState(0);
+    const [startPoint, SetStartPoint] = useState([10, 5]);
+    const [endPoint, SetEndPoint] = useState([11, 6]);
+    const [walls, SetWalls] = useState([]);
+    const [sortAlg, SetSortAlg] = useState("0");
+    const [currentCheck, SetCurrentCheck] = useState([[-1, -1]]);
+    const [currentPath, SetCurrentPath] = useState([[-1, -1]]);
+
     useEffect(() => {
       document.title = "Path Finding Visualiser"
     }, []);
 
-    const [nodeType, setNodeType] = useState(0);
-    const [startPoint, setStartPoint] = useState([10, 5]);
-    const [endPoint, setEndPoint] = useState([11, 6]);
-    const [walls, setWalls] = useState([]);
-    const [sortAlg, setSortAlg] = useState("0");
-    const [currentCheck, setCurrentCheck] = useState([[-1, -1]]);
-    const [currentPath, setCurrentPath] = useState([[-1, -1]]);
+    const Pause = () => { 
+        return new Promise(resolve => { 
+            setTimeout(function() { 
+            resolve(); 
+            }, Number.MIN_VALUE); 
+        }); 
+    };
 
-    function setStarted(i) {
+    const ResetPathFinding = () => {
+        SetCurrentPath([]);
+        SetCurrentCheck([]);
+        tempCurrentCheck = [[-1, -1]];
+        points = {};
+    }
+
+    const SetStarted = (i) => {
         if (!started && !i) {
             started = i;
-            reset();
+            ResetPathFinding();
         } else {
             started = i;
         }
     }
 
-    const StartButton = async (val) => {
-        setStarted(val);
+    const StartPathFinding = (val) => {
+        SetStarted(val);
         if (started) {
             if (sortAlg === "0") {
                 DijkstraAlgorithm();
@@ -38,16 +53,8 @@ function PathFindingVisualiser() {
         }
     }
 
-    const reset = () => {
-        setCurrentPath([]);
-        setCurrentCheck([]);
-        tempCurrentCheck = [[-1, -1]];
-        points = {};
-    }
-
     const DijkstraInitialisePoints = () => {
         points = {};
-        //var tempCurrentCheck = Array.from(currentCheck);
         for (var i = 0; i < 40; i++) {
             for (var j = 0; j < 20; j++) {
                 if (JSON.stringify([i, j]) === JSON.stringify(startPoint)) {
@@ -55,19 +62,9 @@ function PathFindingVisualiser() {
                 } else {
                     points[i + " " + j] = [false, Infinity, null];
                 }
-                //tempCurrentCheck.push([i,j]);
-                //setCurrentCheck(tempCurrentCheck);
             }
         }
     }
-
-    var wait = function() { 
-        return new Promise(resolve => { 
-            setTimeout(function() { 
-            resolve(); 
-            }, Number.MIN_VALUE); 
-        }); 
-    };
 
     const DijkstraCheckNeighbours = async (point) => {
         if (JSON.stringify(point) === JSON.stringify([-1,-1])) {
@@ -85,8 +82,8 @@ function PathFindingVisualiser() {
                 tempCurrentCheck.push([pointsToCheck[i][0],pointsToCheck[i][1]]);
             }
         }
-        setCurrentCheck(Array.from(new Set(tempCurrentCheck)));
-        await wait();
+        SetCurrentCheck(Array.from(new Set(tempCurrentCheck)));
+        await Pause();
         DijkstraUpdatePointDistanceAndPrev(pointsToUpdate, point);
         DijkstraUpdateVisited(point);
         return 0;
@@ -141,7 +138,7 @@ function PathFindingVisualiser() {
 
     const DijkstraAlgorithm = async () => {
         if (started) {
-            reset();
+            ResetPathFinding();
             DijkstraInitialisePoints();
             var returnVal = await DijkstraCheckNeighbours(startPoint);
             var point = [-1,-1];
@@ -152,27 +149,26 @@ function PathFindingVisualiser() {
                     returnVal = -1;
                 }
             }
-            setStarted(false);
+            SetStarted(false);
             if (returnVal === 1) {
                 var pointInPath = endPoint;
                 var pathInOrder = [];
                 while (pointInPath !== startPoint) {
-                    console.log("point");
                     pathInOrder.unshift(pointInPath);
                     pointInPath = points[pointInPath[0] + " " + pointInPath[1]][2];
                 }
                 pathInOrder.unshift(startPoint);
-                setCurrentPath(pathInOrder);
+                SetCurrentPath(pathInOrder);
             } else {
-                reset();
+                ResetPathFinding();
             }
         }
     }
 
     return (
         <div className="PathFindingVisualiser">
-            <OptionsPanel started={started} setStarted={setStarted} sortAlgSet={setSortAlg} startButton={StartButton} setNodeType={setNodeType}></OptionsPanel>
-            <GridPanel currentPath={currentPath} setStarted={setStarted} currentCheck={currentCheck} nodeType={nodeType} setStartPoint={setStartPoint} startPoint={startPoint} setEndPoint={setEndPoint} endPoint={endPoint} setWalls={setWalls} walls={walls}></GridPanel>
+            <OptionsPanel SetStarted={SetStarted} SetSortAlg={SetSortAlg} StartPathFinding={StartPathFinding} SetNodeType={SetNodeType}></OptionsPanel>
+            <GridPanel currentPath={currentPath} SetStarted={SetStarted} currentCheck={currentCheck} nodeType={nodeType} SetStartPoint={SetStartPoint} startPoint={startPoint} SetEndPoint={SetEndPoint} endPoint={endPoint} SetWalls={SetWalls} walls={walls}></GridPanel>
         </div>
     );
 }

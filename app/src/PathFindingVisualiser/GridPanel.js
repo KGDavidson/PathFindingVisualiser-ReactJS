@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import './GridPanel.css';
 
-var centerY = -95 / 2;
-var centerX = -70 / 1.5;
+const initialOffsetY = -95 / 2;
+const initialOffsetX = -70 / 1.5;
 
 var mousePos = [0, 0];
 var middleMouse = false;
@@ -15,10 +15,9 @@ document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
 });
 
-
 function GridPanel(props) {
-    const [offsetX, setOffsetX] = useState(1);
-    const [offsetY, setOffsetY] = useState(1);
+    const [offsetX, SetOffsetX] = useState(1);
+    const [offsetY, SetOffsetY] = useState(1);
 
     const handleEvent = (event) => {
         if (event !== undefined) {
@@ -32,7 +31,7 @@ function GridPanel(props) {
                     document.body.style.cursor = "all-scroll";
                 }
                 if (leftMouse) {
-                    props.setStarted(false);
+                    props.SetStarted(false);
                     document.body.style.cursor = "crosshair";
                     var ij = event.target.id;
                     if (ij !== "") {
@@ -41,17 +40,17 @@ function GridPanel(props) {
                         var j = Number.parseInt(ij[1]);
                         if (props.nodeType > 0) {
                             if (!JSON.stringify(props.walls).includes(JSON.stringify([i, j])) && JSON.stringify(props.startPoint) !== JSON.stringify([i, j])) {
-                                props.setEndPoint([i, j]);
+                                props.SetEndPoint([i, j]);
                             }
                         } else {
                             if (!JSON.stringify(props.walls).includes(JSON.stringify([i, j])) && JSON.stringify(props.endPoint) !== JSON.stringify([i, j])) {
-                                props.setStartPoint([i, j]);
+                                props.SetStartPoint([i, j]);
                             }
                         }
                     }
                 }
                 if (rightMouse) {
-                    props.setStarted(false);
+                    props.SetStarted(false);
                     var ij = event.target.id;
                     if (ij !== "") {
                         ij = ij.split(" ");
@@ -66,17 +65,17 @@ function GridPanel(props) {
                             }
                             changed.push([i, j]);
                             const uniqueWalls = Array.from(new Set(tempWalls));
-                            props.setWalls(uniqueWalls);
+                            props.SetWalls(uniqueWalls);
                         }
                     }
                 }
             }
             
             if (event.type === "mousemove" && middleMouse) {
-                var tempMousePos = [event.screenX, event.screenY];
+                const tempMousePos = [event.screenX, event.screenY];
 
-                setOffsetX(offsetX + ((tempMousePos[0] - mousePos[0])) / 7);
-                setOffsetY(offsetY + ((tempMousePos[1] - mousePos[1])) / 7);
+                SetOffsetX(offsetX + ((tempMousePos[0] - mousePos[0])) / 7);
+                SetOffsetY(offsetY + ((tempMousePos[1] - mousePos[1])) / 7);
         
                 mousePos = [event.screenX, event.screenY];
             }
@@ -96,7 +95,7 @@ function GridPanel(props) {
                         }
                         changed.push([i, j]);
                         const uniqueWalls = Array.from(new Set(tempWalls));
-                        props.setWalls(uniqueWalls);
+                        props.SetWalls(uniqueWalls);
                     }
                 }
             }
@@ -135,7 +134,7 @@ function GridPanel(props) {
     }
 
     function Square(colour, i, j) {
-        return (<div id={i + " " + j} style={{background: colour, marginTop: 93 / 2 + centerY + offsetY + (j * 5) + 'vh', marginLeft: 70 / 1.55 + centerX + offsetX + (i * 5) + 'vh'}} className="Square" onClick={handleEvent} onMouseUp={handleEvent}></div>);
+        return (<div id={i + " " + j} style={{background: colour, marginTop: 93 / 2 + initialOffsetY + offsetY + (j * 5) + 'vh', marginLeft: 70 / 1.55 + initialOffsetX + offsetX + (i * 5) + 'vh'}} className="Square" onClick={handleEvent} onMouseUp={handleEvent}></div>);
     }
 
     return (
