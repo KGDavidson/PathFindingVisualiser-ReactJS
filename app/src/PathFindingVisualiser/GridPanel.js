@@ -9,7 +9,7 @@ var middleMouse = false;
 var leftMouse = false;
 var rightMouse = false;
 
-var changed = [];
+var changedTiles = [];
 
 document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
@@ -57,13 +57,13 @@ function GridPanel(props) {
                         var i = Number.parseInt(ij[0]);
                         var j = Number.parseInt(ij[1]);
                         var tempWalls = props.walls;
-                        if (JSON.stringify(props.startPoint) !== JSON.stringify([i, j]) && JSON.stringify(props.endPoint) !== JSON.stringify([i, j]) && !JSON.stringify(changed).includes(JSON.stringify([i, j]))) {
+                        if (JSON.stringify(props.startPoint) !== JSON.stringify([i, j]) && JSON.stringify(props.endPoint) !== JSON.stringify([i, j]) && !JSON.stringify(changedTiles).includes(JSON.stringify([i, j]))) {
                             if (JSON.stringify(tempWalls).includes(JSON.stringify([i, j]))){
                                 tempWalls = tempWalls.filter(item => JSON.stringify(item) !== JSON.stringify([i, j]));
                             } else {
                                 tempWalls.push([i, j]);
                             }
-                            changed.push([i, j]);
+                            changedTiles.push([i, j]);
                             const uniqueWalls = Array.from(new Set(tempWalls));
                             props.SetWalls(uniqueWalls);
                         }
@@ -87,13 +87,13 @@ function GridPanel(props) {
                     var i = Number.parseInt(ij[0]);
                     var j = Number.parseInt(ij[1]);
                     var tempWalls = props.walls;
-                    if (JSON.stringify(props.startPoint) !== JSON.stringify([i, j]) && JSON.stringify(props.endPoint) !== JSON.stringify([i, j]) && !JSON.stringify(changed).includes(JSON.stringify([i, j]))) {
+                    if (JSON.stringify(props.startPoint) !== JSON.stringify([i, j]) && JSON.stringify(props.endPoint) !== JSON.stringify([i, j]) && !JSON.stringify(changedTiles).includes(JSON.stringify([i, j]))) {
                         if (JSON.stringify(tempWalls).includes(JSON.stringify([i, j]))){
                             tempWalls = tempWalls.filter(item => JSON.stringify(item) !== JSON.stringify([i, j]));
                         } else {
                             tempWalls.push([i, j]);
                         }
-                        changed.push([i, j]);
+                        changedTiles.push([i, j]);
                         const uniqueWalls = Array.from(new Set(tempWalls));
                         props.SetWalls(uniqueWalls);
                     }
@@ -101,7 +101,7 @@ function GridPanel(props) {
             }
 
             if (event.type === "mouseup") {
-                changed = [];
+                changedTiles = [];
                 middleMouse = false;
                 leftMouse = false;
                 rightMouse = false;
@@ -110,7 +110,7 @@ function GridPanel(props) {
         }
     };
 
-    function SpawnSquares(props) {
+    const SpawnSquares = () => {
         var squares = [];
         for (var i = 0; i < 40; i++) {
             for (var j = 0; j < 20; j++) {
@@ -133,13 +133,13 @@ function GridPanel(props) {
         return (squares);
     }
 
-    function Square(colour, i, j) {
+    const Square = (colour, i, j) => {
         return (<div id={i + " " + j} style={{background: colour, marginTop: 93 / 2 + initialOffsetY + offsetY + (j * 5) + 'vh', marginLeft: 70 / 1.55 + initialOffsetX + offsetX + (i * 5) + 'vh'}} className="Square" onClick={handleEvent} onMouseUp={handleEvent}></div>);
     }
 
     return (
         <div className="GridPanel" onMouseDown={handleEvent} onMouseMove={handleEvent} onMouseUp={handleEvent}>
-            {SpawnSquares(props)}
+            {SpawnSquares()}
         </div>
     );
 }

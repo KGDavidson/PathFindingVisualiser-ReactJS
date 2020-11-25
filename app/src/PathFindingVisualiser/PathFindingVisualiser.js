@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import './PathFindingVisualiser.css';
 import OptionsPanel from './OptionsPanelPFV';
 import GridPanel from './GridPanel';
+import './PathFindingVisualiser.css';
 
-var started = false;
+var isStarted = false;
 var tempCurrentCheck = [[-1, -1]];
 var points = {};
 
@@ -36,17 +36,17 @@ function PathFindingVisualiser() {
     }
 
     const SetStarted = (i) => {
-        if (!started && !i) {
-            started = i;
+        if (!isStarted && !i) {
+            isStarted = i;
             ResetPathFinding();
         } else {
-            started = i;
+            isStarted = i;
         }
     }
 
     const StartPathFinding = (val) => {
         SetStarted(val);
-        if (started) {
+        if (isStarted) {
             if (sortAlg === "0") {
                 DijkstraAlgorithm();
             }
@@ -137,7 +137,7 @@ function PathFindingVisualiser() {
     }
 
     const DijkstraAlgorithm = async () => {
-        if (started) {
+        if (isStarted) {
             ResetPathFinding();
             DijkstraInitialisePoints();
             var returnVal = await DijkstraCheckNeighbours(startPoint);
@@ -145,7 +145,7 @@ function PathFindingVisualiser() {
             while (returnVal === 0) {
                 point = DijkstraReturnCurrentShortest();
                 returnVal = await DijkstraCheckNeighbours(point);
-                if (!started) {
+                if (!isStarted) {
                     returnVal = -1;
                 }
             }
@@ -167,7 +167,7 @@ function PathFindingVisualiser() {
 
     return (
         <div className="PathFindingVisualiser">
-            <OptionsPanel SetStarted={SetStarted} SetSortAlg={SetSortAlg} StartPathFinding={StartPathFinding} SetNodeType={SetNodeType}></OptionsPanel>
+            <OptionsPanel isStarted={isStarted} SetStarted={SetStarted} SetSortAlg={SetSortAlg} StartPathFinding={StartPathFinding} SetNodeType={SetNodeType}></OptionsPanel>
             <GridPanel currentPath={currentPath} SetStarted={SetStarted} currentCheck={currentCheck} nodeType={nodeType} SetStartPoint={SetStartPoint} startPoint={startPoint} SetEndPoint={SetEndPoint} endPoint={endPoint} SetWalls={SetWalls} walls={walls}></GridPanel>
         </div>
     );
