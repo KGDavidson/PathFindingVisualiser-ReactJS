@@ -15,16 +15,21 @@ function PathFindingVisualiser() {
     const [sortAlg, SetSortAlg] = useState("0");
     const [currentCheck, SetCurrentCheck] = useState([[-1, -1]]);
     const [currentPath, SetCurrentPath] = useState([[-1, -1]]);
+    const [currentSortSpeed, SetCurrentSortSpeed] = useState(0);
 
     useEffect(() => {
       document.title = "Path Finding Visualiser"
     }, []);
 
+    const SetSortSpeed = (sortSpeed) => {
+        SetCurrentSortSpeed(0.5 - parseInt(sortSpeed));
+    }
+
     const Pause = () => { 
         return new Promise(resolve => { 
             setTimeout(function() { 
             resolve(); 
-            }, Number.MIN_VALUE); 
+            }, currentSortSpeed); 
         }); 
     };
 
@@ -167,7 +172,7 @@ function PathFindingVisualiser() {
 
     return (
         <div className="PathFindingVisualiser">
-            <OptionsPanel isStarted={isStarted} SetStarted={SetStarted} SetSortAlg={SetSortAlg} StartPathFinding={StartPathFinding} SetNodeType={SetNodeType}></OptionsPanel>
+            <OptionsPanel isStarted={isStarted} SetStarted={SetStarted} SetSortAlg={SetSortAlg} StartPathFinding={StartPathFinding} SetNodeType={SetNodeType} SetSortSpeed={SetSortSpeed}></OptionsPanel>
             <GridPanel currentPath={currentPath} SetStarted={SetStarted} currentCheck={currentCheck} nodeType={nodeType} SetStartPoint={SetStartPoint} startPoint={startPoint} SetEndPoint={SetEndPoint} endPoint={endPoint} SetWalls={SetWalls} walls={walls}></GridPanel>
         </div>
     );

@@ -19,7 +19,7 @@ const OptionsPanel = (props) => {
     }
 
     const ReturnSpeed = (event) => {
-        //props.SetSortSpeed(event.target.value);
+        props.SetSortSpeed(event.target.value);
     }
 
     return(
@@ -43,7 +43,7 @@ const OptionsPanel = (props) => {
             <br/>
             <h3>Path Finding Speed
                 <br/>
-                <input onChange={event => {ReturnSpeed(event)}} className="slider" type="range" min="0" max="0.99" step="0.01"/>
+                <input onChange={event => {ReturnSpeed(event)}} className="slider" type="range" min="0" max={0.5 - Number.MIN_VALUE} step="0.001"/>
             </h3>
             <br/>
             <button onClick={StartPathFinding}>{props.isStarted ? "Reset" : "Start"}</button>
