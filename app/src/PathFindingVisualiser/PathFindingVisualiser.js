@@ -15,7 +15,7 @@ function PathFindingVisualiser() {
     const [sortAlg, SetSortAlg] = useState("0");
     const [currentCheck, SetCurrentCheck] = useState([[-1, -1]]);
     const [currentPath, SetCurrentPath] = useState([[-1, -1]]);
-    const [currentSortSpeed, SetCurrentSortSpeed] = useState(0);
+    const [currentSortSpeed, SetCurrentSortSpeed] = useState(0.0);
 
     useEffect(() => {
       document.title = "Path Finding Visualiser"
