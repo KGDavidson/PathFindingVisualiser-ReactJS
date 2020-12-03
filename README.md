@@ -1,8 +1,8 @@
 # PathFindingVisualiser-ReactJS
 
 ### Path Finding Visualiser with support for the following Path Finding Algorithms
-#### * [x] Dijkstra's Algorithm
-#### * [ ] A* Algortihm
+- [x] Dijkstra's Algorithm
+- [ ] A* Algortihm
 
 </br>
 
