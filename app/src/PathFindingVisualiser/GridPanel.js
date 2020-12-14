@@ -116,15 +116,15 @@ function GridPanel(props) {
             for (var j = 0; j < 20; j++) {
                 var currentPoint = [i, j];
                 if (JSON.stringify(currentPoint) === JSON.stringify(props.startPoint)){
-                    squares.push(Square('#66fcf1', i, j));
+                    squares.push(Square('#ea5455', i, j));
                 } else if (JSON.stringify(currentPoint) === JSON.stringify(props.endPoint)) {
-                    squares.push(Square('#45a29e', i, j));
+                    squares.push(Square('#ec7676', i, j));
                 } else if (JSON.stringify(props.currentPath).includes(JSON.stringify(currentPoint))) {
-                    squares.push(Square('#62AB37', i, j));
+                    squares.push(Square('#e8e8e8', i, j));
                 } else if (JSON.stringify(props.currentCheck).includes(JSON.stringify(currentPoint))) {
-                    squares.push(Square('#E03616', i, j));
+                    squares.push(Square('#f07b3f', i, j));
                 } else if (JSON.stringify(props.walls).includes(JSON.stringify(currentPoint))) {
-                    squares.push(Square('#c5c6c7', i, j));
+                    squares.push(Square('#7b7b7b', i, j));
                 } else {
                     squares.push(Square('#0b0c10', i, j));
                 }
